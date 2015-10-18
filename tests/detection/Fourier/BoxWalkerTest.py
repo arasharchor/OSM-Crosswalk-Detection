@@ -52,7 +52,7 @@ class TestImageLoader(unittest.TestCase):
         tile.plot()
 
     def test_Saveimages(self):
-        bbox = self.Rappi()
+        bbox = self.Lyss()
         walker = BoxWalker(bbox)
         walker.loadTiles()
         walker.loadStreets()
@@ -75,8 +75,13 @@ class TestImageLoader(unittest.TestCase):
     def Luzern(self):
         return Bbox(8.301307, 47.046349, 8.305528, 47.051053)
 
-    def Bern(self):
+    def BernAltStadt(self):
+        #TrainSet
         return Bbox(7.444389, 46.947913, 7.448316, 46.949693)
+
+    def ChurBhfAltstadt(self):
+        #TrainSet
+        return Bbox(9.528281, 46.850342, 9.532599, 46.853980)
 
     def Zurich2(self):
         #Trainset
@@ -87,3 +92,7 @@ class TestImageLoader(unittest.TestCase):
 
     def Lausanne(self):
         return Bbox(6.555186, 46.508591, 6.563499, 46.516437)
+
+    def Lyss(self):
+        #Trainset
+        return Bbox(7.304337, 47.072818, 7.308200, 47.075229)

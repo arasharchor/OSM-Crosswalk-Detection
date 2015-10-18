@@ -7,7 +7,7 @@ from random import shuffle
 class TestNeuralNetwork(unittest.TestCase):
 
 
-    def test_train(self):
+    def test_troain(self):
         self.readData()
 
         net = NeuralNetwork()

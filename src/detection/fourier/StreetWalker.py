@@ -6,6 +6,7 @@ from src.base.Bbox import Bbox
 from src.base.Tile import Tile
 from src.base.Constants import Constants
 from src.detection.fourier.CrosswalkDetector import CrosswalkDetector
+from src.detection.fourier.NodeMerger import NodeMerger
 
 
 
@@ -42,7 +43,12 @@ class StreetWalker:
                 centreNode = t.getCentreNode()
                 crosswalkNodes.append(centreNode)
 
-        return crosswalkNodes
+        merged = self.mergeNodes(crosswalkNodes)
+        return merged
+
+    def mergeNodes(self, nodeList):
+        merger = NodeMerger.fromNodeList(nodeList)
+        return merger.reduce()
 
     def isCrosswalk(self, squaredTile):
         detector = CrosswalkDetector.fromPilImage(squaredTile.image, self.street)

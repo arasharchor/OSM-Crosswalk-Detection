@@ -108,7 +108,7 @@ class CrosswalkDetector:
         if(CrosswalkDetector.neuralNetwork is None):
 
             #CrosswalkDetector.neuralNetwork = NeuralNetwork.fromFile("/home/osboxes/Documents/squaredImages/ffnn50,50,85.7 2d.serialize")
-            CrosswalkDetector.neuralNetwork = NeuralNetwork.fromFile("/home/osboxes/Documents/squaredImages/bigRotatedffnn,80,80,90% (fast bester - min 0.95! -).serialize")
+            CrosswalkDetector.neuralNetwork = NeuralNetwork.fromFile("/home/osboxes/Documents/squaredImages/bigRotatedffnn40,40,91.4%!.serialize")
         return CrosswalkDetector.neuralNetwork
 
 

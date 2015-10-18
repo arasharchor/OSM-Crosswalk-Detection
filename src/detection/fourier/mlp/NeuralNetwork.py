@@ -6,7 +6,7 @@ import pickle
 
 class NeuralNetwork:
     def __init__(self):
-        self.nHidden1 = 50
+        self.layerSizes = [40,40,40,40,40]
 
 
 
@@ -17,8 +17,8 @@ class NeuralNetwork:
         n.addInputModule(inLayer)
         lastLayer = inLayer
 
-        for i in range(0,3):
-            layer = SigmoidLayer(self.nHidden1)
+        for i in self.layerSizes:
+            layer = SigmoidLayer(i)
             n.addModule(layer)
             connection = FullConnection(lastLayer,layer)
             n.addConnection(connection)
@@ -69,9 +69,7 @@ class NeuralNetwork:
 
     def train(self):
         trainer = BackpropTrainer(self.net, dataset=self.traindata, momentum=0.1, verbose=True, weightdecay=0.01)
-        #trainer.trainUntilConvergence(dataset=self.traindata, maxEpochs=500,validationData=self.testdata)
-        lastError = 0
-        epoches = 20
+        epoches = 10
         trainer.trainEpochs(epoches)
 
         error = self.printError()
@@ -93,9 +91,10 @@ class NeuralNetwork:
         print "Erfolgsrate Testset: " + str((float(richtige) / len(self.testdata)) * 100)
         return (float(richtige) / len(self.testdata)) * 100
 
+
     def isCrosswalk(self, frequencies):
         ret = self.net.activate(frequencies)
-        crosswalkDetected = ret[1] > 0.95 and ret[0] < 0.1
+        crosswalkDetected = ret[1] > 0.95 and ret[0] < 0.05
         if(crosswalkDetected): print ret
         return crosswalkDetected
 

@@ -40,12 +40,8 @@ class BoxWalker:
                 lastpercentage = percentage
 
         self.out("Finish walking")
-        mergedNodes = self.mergeNearNodes(crosswalkNodes)
-        return mergedNodes
+        return crosswalkNodes
 
-    def mergeNearNodes(self, nodeList):
-        merger = NodeMerger.fromNodeList(nodeList)
-        return merger.reduce()
 
     def saveImages(self):
         tile = self.proxy.getBigTile2()
