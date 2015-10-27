@@ -52,13 +52,17 @@ class StreetWalker:
 
     def isCrosswalk(self, squaredTile):
         detector = CrosswalkDetector.fromPilImage(squaredTile.image, self.street)
+        '''
         detector.rotateImg()
         detector.cut()
         detector.normalize()
         detector.calc2dFourier()
         detector.convertToAbsolute()
+        detector.convertToPhase()
+        '''
+        return detector.isCrosswalk2()
 
-        return detector.isCrosswalk()
+
 
 
     def getSquaredTiles(self, node1, node2):

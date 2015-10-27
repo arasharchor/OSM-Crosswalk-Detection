@@ -203,7 +203,17 @@ class Tile:
         return self.getSubTile(bbox)
 
 
+    def save50Images(self, dir_path, prefix):
+        (width, height) = self.image.size
 
+        for x in range(width/50 -1):
+            for y in range(height/50 -1):
+                x1 = 50*x
+                y1 = 50*y
+                x2 = x1 + 50
+                y2 = y1 + 50
+                img = self.image.crop((x1, y1, x2, y2))
+                img.save(dir_path + prefix + "img" + str(x) + ","+ str(y) + ".png")
 
     def plot(self):
         plt.imshow(self.image)

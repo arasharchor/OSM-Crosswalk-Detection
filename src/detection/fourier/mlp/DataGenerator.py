@@ -18,7 +18,8 @@ class DataGenerator:
             detector = CrosswalkDetector.fromSafedImageRotated(img)
             detector.calc2dFourier()
             detector.convertToAbsolute()
-            sample = SampleData.fromAbsoluteFourier2d(detector.absFourier2d, isCrosswalk)
+            detector.convertToPhase()
+            sample = SampleData.fromAbsoluteFourier2d(detector.absFourier2d + detector.phaFourier2d, isCrosswalk)
             datas.append(sample)
 
         return datas

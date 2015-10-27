@@ -39,6 +39,7 @@ class TestImageLoader(unittest.TestCase):
 
         tile.stopDrawing()
         tile.plot()
+        tile.image.save("boxwalkertest.png")
 
         print str(len(crosswalkNodes)) + " crosswalks found!"
 
@@ -96,3 +97,4 @@ class TestImageLoader(unittest.TestCase):
     def Lyss(self):
         #Trainset
         return Bbox(7.304337, 47.072818, 7.308200, 47.075229)
+

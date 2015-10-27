@@ -6,7 +6,7 @@ import pickle
 
 class NeuralNetwork:
     def __init__(self):
-        self.layerSizes = [40,40,40,40,40]
+        self.layerSizes = [50, 50]
 
 
 
@@ -38,10 +38,10 @@ class NeuralNetwork:
 
     def setDataset(self, sampleDatas):
         self.sampleData = sampleDatas
-        set = ClassificationDataSet(50*50,1, nb_classes=2)
+        set = ClassificationDataSet(len(sampleDatas[0].getInputArray()),1, nb_classes=2)
         set.setField('class', [[0], [1]])
         for s in sampleDatas:
-            inp = s.getNormalizedInputArray()
+            inp = s.getInputArray()
             outp = s.getOutputArray()
             set.addSample(inp, outp)
 
@@ -57,10 +57,10 @@ class NeuralNetwork:
         #print self.traindata['class'][0]
 
     def setTestSet(self, sampleDatas):
-        set = ClassificationDataSet(50*50,1, nb_classes=2)
+        set = ClassificationDataSet(len(sampleDatas[0].getInputArray()),1, nb_classes=2)
         set.setField('class', [[0], [1]])
         for s in sampleDatas:
-            inp = s.getNormalizedInputArray()
+            inp = s.getInputArray()
             outp = s.getOutputArray()
             set.addSample(inp, outp)
 
@@ -69,7 +69,7 @@ class NeuralNetwork:
 
     def train(self):
         trainer = BackpropTrainer(self.net, dataset=self.traindata, momentum=0.1, verbose=True, weightdecay=0.01)
-        epoches = 10
+        epoches = 15
         trainer.trainEpochs(epoches)
 
         error = self.printError()
@@ -81,9 +81,11 @@ class NeuralNetwork:
         richtige = 0
         for s in self.testdata:
             ret = self.net.activate(s[0])
-            crossWalkDetected = 0
-            #if(ret[1] > 0.5): crossWalkDetected = 1
-            if(ret[1] > 0.9 and ret[0] < 0.1): crossWalkDetected = 1
+            crossWalkDetected = 2
+            if(ret[1] < 0.95 and ret[0] > 0.05):
+                crossWalkDetected = 0
+            elif(ret[1] > 0.95 and ret[0] < 0.05):
+                crossWalkDetected = 1
 
             print str(ret) + " Should: " + str(s[1][1]) + " Detected: " + str(crossWalkDetected)
             if(crossWalkDetected == s[1][1]): richtige += 1
@@ -94,7 +96,7 @@ class NeuralNetwork:
 
     def isCrosswalk(self, frequencies):
         ret = self.net.activate(frequencies)
-        crosswalkDetected = ret[1] > 0.95 and ret[0] < 0.05
+        crosswalkDetected = ret[1] > 0.99 and ret[0] < 0.01
         if(crosswalkDetected): print ret
         return crosswalkDetected
 

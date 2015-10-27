@@ -7,14 +7,18 @@ from scipy import ndimage
 from PIL import Image
 from matplotlib import pyplot as plt
 from src.base.Constants import Constants
+import src.detection.fourier.deep.Convnet as Convnet
+import cmath
+import math
 
 
 class CrosswalkDetector:
     @classmethod
     def fromPilImage(cls, image, street):
         detector = cls()
-        img = np.array(image)
-        detector.cv2Image = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
+        detector.pilimg = image
+        detector.img = np.array(image)
+        detector.cv2Image = cv2.cvtColor(detector.img, cv2.COLOR_RGB2GRAY)
         detector.street = street
         return detector
 
@@ -34,6 +38,8 @@ class CrosswalkDetector:
         self.isNormalized = False
         self.fourier2d = None
         self.absFourier2d = None
+        self.img = None
+        self.pilimg = None
 
     def process(self):
         self.rotateImg()
@@ -79,21 +85,48 @@ class CrosswalkDetector:
         self.fourier2d = four2d
 
     def convertToAbsolute(self):
+        normalizeWith = 3000
         self.absFourier2d = []
         for y in range(0, len(self.fourier2d)):
             row = []
             for x in range(0, len(self.fourier2d[0])):
-               absolute = abs(self.fourier2d[y, x])
+               absolute = abs(self.fourier2d[y, x]) / normalizeWith
                row.append(absolute)
             self.absFourier2d.append(row)
 
+    def convertToPhase(self):
+        normalizeWith = 3.2
+        self.phaFourier2d = []
+        for y in range(0, len(self.fourier2d)):
+            row = []
+            for x in range(0, len(self.fourier2d[0])):
+               absolute = cmath.phase(self.fourier2d[y, x]) /normalizeWith
+               row.append(absolute)
+            self.phaFourier2d.append(row)
+
     def isCrosswalk(self):
-        data = SampleData.fromAbsoluteFourier2d(self.absFourier2d)
-        inputVector = data.getNormalizedInputArray()
+        data = SampleData.fromAbsoluteFourier2d(self.absFourier2d + self.phaFourier2d)
+        inputVector = data.getInputArray()
         net = CrosswalkDetector.getNeuralNetwork()
-        assert len(inputVector) == 2500
         res = net.isCrosswalk(inputVector)
         return res
+
+    def crop(self,pilimg):
+        size = 50
+        (width, height) = pilimg.size
+        x1 = width / 2 - size/2
+        x2 = width / 2 + size/2
+        y1 = height/2 + size/2
+        y2 = height/2 - size/2
+
+        return pilimg.crop((x1, y2, x2, y1))
+    def isCrosswalk2(self):
+        cropped = self.crop(self.pilimg)
+        img = np.asarray(cropped)
+
+        x = img.reshape(3, 50, 50)
+        return Convnet.predict(x)
+
     def getPilImage(self):
         cv2_im = cv2.cvtColor(self.cv2Image, cv2.COLOR_GRAY2RGB)
         return Image.fromarray(cv2_im)
@@ -108,7 +141,7 @@ class CrosswalkDetector:
         if(CrosswalkDetector.neuralNetwork is None):
 
             #CrosswalkDetector.neuralNetwork = NeuralNetwork.fromFile("/home/osboxes/Documents/squaredImages/ffnn50,50,85.7 2d.serialize")
-            CrosswalkDetector.neuralNetwork = NeuralNetwork.fromFile("/home/osboxes/Documents/squaredImages/bigRotatedffnn40,40,91.4%!.serialize")
+            CrosswalkDetector.neuralNetwork = NeuralNetwork.fromFile("/home/osboxes/Documents/squaredImages/fnnMoreStreet.serialize")
         return CrosswalkDetector.neuralNetwork
 
 

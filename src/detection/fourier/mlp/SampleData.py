@@ -12,22 +12,12 @@ class SampleData:
         data.isCrosswalk = isCrosswalk
         return data
 
-
-
     def getInputArray(self):
         input = []
         for rows in self.fourier2d:
             for value in rows:
                 input.append(value)
         return input
-
-    def getNormalizedInputArray(self):
-        max = 10000
-        input = self.getInputArray()
-        for i in range(len(input)):
-            input[i] = input[i]/max
-        return input
-
 
     def getOutputArray(self):
         if(self.isCrosswalk):

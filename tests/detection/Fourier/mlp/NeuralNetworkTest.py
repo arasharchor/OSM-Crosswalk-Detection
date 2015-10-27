@@ -27,7 +27,7 @@ class TestNeuralNetwork(unittest.TestCase):
             net.setDataset(self.trainSet)
             error = net.train()
             if(error > lasterror):
-                net.saveNet("/home/osboxes/Documents/squaredImages/bigRotatedffnn.serialize")
+                net.saveNet("/home/osboxes/Documents/squaredImages/ReducedbigRotatedffnn.serialize")
                 print "Saved!"
                 lasterror = error
 
@@ -52,4 +52,4 @@ class TestNeuralNetwork(unittest.TestCase):
 
     def generateTrainSet(self):
         shuffle(self.dataN)
-        self.trainSet = self.dataY + self.dataN[0:len(self.dataY)*2]
+        self.trainSet = self.dataY + self.dataN[0:len(self.dataY)*4]

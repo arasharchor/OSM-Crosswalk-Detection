@@ -36,10 +36,10 @@ class TestFourierDetection(unittest.TestCase):
         bigTile.plot()
         self.assertTrue(algorithmComparer.getHits() > 0)
 
-    def test_fourierdetection2(self):
+    def test_fourierdelstection2(self):
         crosswalLoader = CrosswalkLoader()
 
-        bbox = self.Kloten()
+        bbox = self.Glarus()
         walker = BoxWalker(bbox)
         walker.loadTiles()
         walker.loadStreets()

@@ -1,6 +1,7 @@
 import os
 from src.service.ImageLoader import ImageLoader
 from src.service.CrosswalkLoader import CrosswalkLoader
+from src.detection.fourier.CrosswalkDetector import CrosswalkDetector
 
 class ImageGenerator:
 
@@ -17,8 +18,9 @@ class ImageGenerator:
             #image = image.crop((145, 145, 205, 205)) #Image 60 x 60
             #image = image.crop((159, 159, 191, 191)) #Image 32 x 32
             #image = image.crop((155, 155, 195, 195)) #Image 40 x 40
-            image = image.crop((165, 165, 185, 185)) #Image 20 x 20
-            self.__save(image, (str(crosswalk.latitude) + "_" + str(crosswalk.longitude)+".jpg"))
+            #image = image.crop((165, 165, 185, 185)) #Image 20 x 20
+            image = image.crop((150, 150, 200, 200)) #Image 50 x 50
+            self.__save(image, "img" + (str(crosswalk.latitude) + "_" + str(crosswalk.longitude)+".png"))
 
     def generate(self, bbox):
         imageLoader = ImageLoader()
