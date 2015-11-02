@@ -38,10 +38,20 @@ class StreetWalker:
         squaredTiles = self.getSquaredTiles(self.node1, self.node2)
         crosswalkNodes = []
 
+        images = []
         for t in squaredTiles:
-            if(self.isCrosswalk(t)):
-                centreNode = t.getCentreNode()
-                crosswalkNodes.append(centreNode)
+            images.append(t.image)
+
+        predictions = CrosswalkDetector.predictCrosswalks(images)
+
+        for i in range(len(squaredTiles)):
+            isCrosswalk = predictions[i]
+            if(isCrosswalk):
+                crosswalkNodes.append(squaredTiles[i].getCentreNode())
+
+
+
+
 
         merged = self.mergeNodes(crosswalkNodes)
         return merged
@@ -82,7 +92,12 @@ class StreetWalker:
             currentNode = node1.stepTo(node2, currentDistance)
             assert self.bigTile.bbox.inBbox(currentNode.toPoint())
 
-            tile = self.bigTile.getSquaredImage(currentNode.toPoint(), Constants.squaredImage_PixelPerSide*2)
+
+            tile = self.bigTile.getTile_byNode(currentNode,50)# self.bigTile.getSquaredImage(currentNode.toPoint(), Constants.squaredImage_PixelPerSide)#*2
+            sizeOk = tile.image.size[0] == 50 and tile.image.size[1] == 50
+            if(not sizeOk):
+                tile = self.bigTile.getSquaredImage(currentNode.toPoint(), Constants.squaredImage_PixelPerSide)
+                assert sizeOk
             squaresTiles.append(tile)
 
 

@@ -11,15 +11,13 @@ from src.service.TilesLoader.TileProxy import TileProxy
 class TestImageLoader(unittest.TestCase):
 
     def testBoxWalkerLuzern(self):
-        walker = BoxWalker(self.ZurichBellvue())
+        walker = BoxWalker(self.Lyss())
         walker.loadTiles()
         walker.loadStreets()
 
         crosswalkNodes = walker.walk()
 
-        tile = walker.proxy.getBigTile2()
-
-        self.printResults(tile,crosswalkNodes)
+        self.printResults(walker.tile, crosswalkNodes)
 
     def test_Boxwalker(self):
         proxy = self.getRappiProxy()
@@ -98,3 +96,50 @@ class TestImageLoader(unittest.TestCase):
         #Trainset
         return Bbox(7.304337, 47.072818, 7.308200, 47.075229)
 
+    def zh1(self):
+        return Bbox(8.522537, 47.375915, 8.526331, 47.376639)
+
+    def zh_schlieren_test(self):
+        return Bbox(8.441207, 47.394649, 8.449643, 47.399710)
+
+    def zh_hardbrucke_test(self):
+        return Bbox(8.517822, 47.386440, 8.520540, 47.388008)
+
+    def zh_hardbrucke_test2(self):
+        return Bbox(8.521436, 47.390424, 8.524241, 47.391289)
+
+    def zh_quartier1(self):
+        return Bbox(8.528067, 47.393102, 8.532648, 47.394939)
+
+    def zh_europabrucke(self):
+        return Bbox(8.492554, 47.391842, 8.503230, 47.394553)
+
+    def winti1(self):
+        return Bbox(8.716155, 47.511909, 8.721038, 47.515722)
+
+    def winti_innenstadt(self):
+        return Bbox(8.723835, 47.497560, 8.733661, 47.501156)
+
+    def thun_innenstadt(self):
+        return Bbox(7.624835, 46.758937, 7.630741, 46.762592)
+
+    def heiligkreuz(self):
+        return Bbox(9.408957, 47.055055, 9.418505, 47.060288)
+
+    def staefa(self):
+        return Bbox(8.729157, 47.233379, 8.741170, 47.238049)
+
+    def zh_buchs(self):
+        return  Bbox(8.432206, 47.456906, 8.441375, 47.461262)
+
+    def ag_baden(self):
+        return Bbox(8.308925, 47.464633, 8.317642, 47.467798)
+
+    def ag_baden2(self):
+        return Bbox( 8.314834, 47.462698, 8.324612, 47.468880)
+
+    def zh_frauental_quartier(self):
+        return Bbox(8.507748, 47.355263, 8.510934, 47.358226)
+
+    def zh_quartier2(self):
+        return Bbox(8.520495, 47.369944, 8.523971, 47.372846)

@@ -70,7 +70,7 @@ class Bbox:
 
         newLeftDown = leftDownNode.addMeter(borderDistance, borderDistance)
         newRightUp = rightUpNode.addMeter(-borderDistance,-borderDistance)
-        ret= Bbox()
+        ret = Bbox()
         ret.set(newLeftDown.toPoint(),newRightUp.toPoint())
         return ret
 

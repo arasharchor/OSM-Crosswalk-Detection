@@ -30,7 +30,28 @@ class CrosswalkDetector:
         detector.isNormalized = True
         return detector
 
+    @staticmethod
+    def predictCrosswalks(pilimg_list):
+        x = np.zeros((len(pilimg_list), 50, 50, 3))
 
+        for i in range(len(pilimg_list)):
+            img = np.array(pilimg_list[i])
+            x[i] = img
+        x = x.reshape(x.shape[0], 3, 50, 50)
+
+        results = Convnet.predict_list(x)
+        return results
+
+    @staticmethod
+    def crop50(pilimg):
+        size = 50
+        (width, height) = pilimg.size
+        x1 = width / 2 - size/2
+        x2 = width / 2 + size/2
+        y1 = height/2 + size/2
+        y2 = height/2 - size/2
+
+        return pilimg.crop((x1, y2, x2, y1))
 
     def __init__(self):
         self.street = None
@@ -104,12 +125,6 @@ class CrosswalkDetector:
                row.append(absolute)
             self.phaFourier2d.append(row)
 
-    def isCrosswalk(self):
-        data = SampleData.fromAbsoluteFourier2d(self.absFourier2d + self.phaFourier2d)
-        inputVector = data.getInputArray()
-        net = CrosswalkDetector.getNeuralNetwork()
-        res = net.isCrosswalk(inputVector)
-        return res
 
     def crop(self,pilimg):
         size = 50
@@ -120,8 +135,12 @@ class CrosswalkDetector:
         y2 = height/2 - size/2
 
         return pilimg.crop((x1, y2, x2, y1))
+
     def isCrosswalk2(self):
-        cropped = self.crop(self.pilimg)
+        if(self.pilimg.size[0] == 50 and self.pilimg.size[1] == 50):
+            cropped = self.pilimg
+        else:
+            cropped = self.crop(self.pilimg)
         img = np.asarray(cropped)
 
         x = img.reshape(3, 50, 50)

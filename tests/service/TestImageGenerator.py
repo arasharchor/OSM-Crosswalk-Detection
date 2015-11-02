@@ -13,8 +13,8 @@ class TestImageGenerator(unittest.TestCase):
         #path = "/home/murthy/Projects/SA/images/positive/zuerich_small/"
         path = "/home/osboxes/Documents/squaredImages/generated/"
 
-        bbox = Bbox('7.559269', '47.551828', '7.612397', '47.571766') #basel
-        #bbox = Bbox('8.516459', '47.366062', '8.546671', '47.386928')
+        #bbox = Bbox('7.559269', '47.551828', '7.612397', '47.571766') #basel, Frauenfeld, Soloturn
+        bbox = Bbox(7.121068, 46.787844, 7.177903, 46.820269)
     #bbox = Bbox('6.128354', '46.187747', '6.157744', '46.203332')
         #bbox = Bbox(8.570083, 47.387947, 8.637695, 47.426400) #Duebendorf
         #bbox = Bbox(6.114341, 46.176792, 6.159574, 46.204077) #Genf

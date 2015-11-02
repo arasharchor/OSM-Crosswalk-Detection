@@ -3,6 +3,7 @@ from StringIO import StringIO
 from PIL import Image
 from src.base.Tile import Tile
 from src.base.Bbox19 import Bbox19
+from src.service.TilesLoader.MultiLoader import MultiLoader
 
 
 class TileLoader:
@@ -16,32 +17,34 @@ class TileLoader:
         self.printStat = True
         self.lastStat = 0
 
-    def download(self, bbox):
+    def generate_link(self, bbox):
         url = self.PRELINK + bbox.getBingFormat() + self.POSTLINK
-        resp, content = httplib2.Http().request(url)
-        image = Image.open(StringIO(content))
-        return Tile(image,bbox)
+        return url
+
 
     def download19(self,bbox):
         result = []
         bboxes19 = Bbox19.toBbox19(bbox)
-        maxY = len(bboxes19)
-        maxX = len(bboxes19[0])
+
+        urls = []
+        for y in range(len(bboxes19)):
+            for x in range(len(bboxes19[y])):
+                box = bboxes19[y][x]
+                url = self.generate_link(box)
+                urls.append(url)
+
+        loader = MultiLoader.from_url_list(urls)
+        loader.download()
+
+        i = 0
         for y in range(len(bboxes19)):
             result.append([])
             for x in range(len(bboxes19[y])):
                 box = bboxes19[y][x]
-                tile = self.download(box)
+                img = loader.results[i]
+                tile = Tile(img, box)
                 result[y].append(tile)
-                if(self.printStat):
-                    self.printStatus(x, y, maxX, maxY)
+                i += 1
 
         return result
 
-    def printStatus(self, x, y, maxX, maxY):
-        all = maxX * maxY
-        current = y * maxX + x
-        percentage = (current / float(all)) * 100
-        if(self.lastStat + 1 < percentage):
-            self.lastStat = percentage
-            print "Image loading progress " + str(percentage) + "%"

@@ -135,6 +135,13 @@ class Tile:
 
 
     def getSquaredImage(self, centrePoint, PIXEL_PER_SIDE):
+
+        centre = self.getPixel(centrePoint)
+        x1 = centre[0] - PIXEL_PER_SIDE/2
+        x2 = centre[0] + PIXEL_PER_SIDE/2
+        y1 = centre[0] - PIXEL_PER_SIDE/2
+        y2 = centre[0] + PIXEL_PER_SIDE/2
+
         #PIXEL_PER_SIDE = Constants.squaredImage_PixelPerSide
         METER_PER_PIXEL = Constants.METER_PER_PIXEL
         DISTANCE = PIXEL_PER_SIDE * METER_PER_PIXEL
@@ -172,6 +179,23 @@ class Tile:
         cropped = self.__getPilImage(cropped)
 
         return Tile(cropped,bbox)
+
+    def getTile_byNode(self, centreNode, side_length):
+        centrePixel = self.getPixel(centreNode.toPoint())
+        size = side_length
+        x1 = centrePixel[0] - side_length/2
+        x2 = centrePixel[0] + side_length/2
+        y1 = centrePixel[1] - side_length/2
+        y2 = centrePixel[1] + side_length/2
+
+        img =  self.image.crop((x1, y1, x2, y2))
+        assert img.size[0] == 50 and img.size[1] == 50
+        leftDown = self.getNode((x1,y1))
+        rightUp = self.getNode((x2,y2))
+        bbox = Bbox()
+        bbox.set(leftDown.toPoint(),rightUp.toPoint())
+
+        return Tile(img,bbox)
 
     def getExtendedSubTile(self, bbox):
         pld = bbox.getDownLeftPoint()

@@ -10,7 +10,9 @@ class TileProxy:
     def __init__(self, bbox):
         self.bbox = bbox
         loader = TileLoader()
+        print "start loading"
         self.tiles = loader.download19(self.bbox)
+        print "finish loading"
 
     def getTileByPoint(self, point):
         if(not self.bbox.inBbox(point)): raise Exception("Point not in bbox")
@@ -70,8 +72,8 @@ class TileProxy:
             for x in range(xCount):
                 tiley = tileId1[0] + y
                 tilex = tileId1[1] + x
-
-                result.paste(self.tiles[tiley][tilex].image, (x * width, (yCount - y - 1) * height))
+                t = self.tiles[tiley][tilex].image
+                result.paste(t, (x * width, (yCount - y - 1) * height))
 
         return result
 

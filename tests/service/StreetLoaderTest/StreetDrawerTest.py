@@ -27,3 +27,6 @@ class StreetDrawerTest(unittest.TestCase):
     def getRappiProxy(self):
         path = Constants.SerializationFolder + "rapperswil.serialize"
         return TileProxy.fromFile(path)
+
+    def winti_innenstadt(self):
+        return Bbox(8.723835, 47.497560, 8.733661, 47.501156)

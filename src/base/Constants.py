@@ -13,6 +13,7 @@ class Constants:
     2 is zoom 19
     1 is zoom 18
     '''
+    ZOOM = 19
     zoomCorrection = 2
     PIXEL_TILE19 = 350
     METER_PER_PIXEL = 0.404428571 / zoomCorrection
