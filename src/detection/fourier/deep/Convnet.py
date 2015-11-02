@@ -297,14 +297,17 @@ def predict_list(x):
     for predict in predictions:
         isCrosswalk = predict[0] > 0.9 and predict[1] < 1e-150
         if(isCrosswalk): print("Zerba " + str(predict))
-        else: print(str(predict))
+        #else: print(str(predict))
         results.append(isCrosswalk)
 
     return results
 
+network = None
 
-theano.config.openmp = True
-#Best Net 64f4:
-network_path = "/home/osboxes/Documents/OSM-Crosswalk-Detection/src/detection/fourier/deep/klein64-4f.e11-l0.045.hdf5"
-network = load_64f4c(network_path,True)
-#Schwellwert: 1e-150, isCrosswalk = predict[0] > 0.9 and predict[1] < 1e-150
+def initialize():
+    global network
+    theano.config.openmp = True
+    #Best Net 64f4:
+    network_path = "/home/osboxes/Documents/OSM-Crosswalk-Detection/src/detection/fourier/deep/klein64-4f.e11-l0.045.hdf5"
+    network = load_64f4c(network_path,True)
+    #Schwellwert: 1e-150, isCrosswalk = predict[0] > 0.9 and predict[1] < 1e-150

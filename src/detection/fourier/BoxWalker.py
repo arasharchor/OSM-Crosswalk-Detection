@@ -3,12 +3,14 @@ from src.data.TileLoader import TileLoader
 from src.service.StreetLoader.StreetLoader import StreetLoader
 import datetime
 from src.detection.fourier.NodeMerger import NodeMerger
+import src.detection.fourier.deep.Convnet
 
 
 class BoxWalker:
     def __init__(self, bbox):
         self.bbox = bbox
         self.tile = None
+        src.detection.fourier.deep.Convnet.initialize()
 
     def loadTiles(self):
         self.out("Loading images within bounding box")
