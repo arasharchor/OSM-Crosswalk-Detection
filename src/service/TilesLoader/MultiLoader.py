@@ -15,16 +15,27 @@ class MultiLoader:
         return loader
 
     def download(self):
-        # Make the Pool of workers
-        pool = ThreadPool(4)
-        # Open the urls in their own threads
-        # and return the results
-        results = pool.map(urllib2.urlopen, self.urls)
-        #close the pool and wait for the work to finish
-        pool.close()
-        pool.join()
+        results = []
+        tile_per_trial = 40
+        nb_urls = len(self.urls)
+
+        for i in range(int(nb_urls/tile_per_trial)):
+            start = i * tile_per_trial
+            end = start + tile_per_trial
+            if(end >= nb_urls): end = nb_urls -1
+            urlpart = self.urls[start:end]
+            result = self._download(urlpart)
+            results += result
 
         self.results = self._convert_to_image(results)
+
+    def _download(self, urls):
+        pool = ThreadPool(10)
+        results = pool.map(urllib2.urlopen, urls)
+        pool.close()
+        pool.join()
+        return results
+
 
     def _convert_to_image(self, results):
         ret = []

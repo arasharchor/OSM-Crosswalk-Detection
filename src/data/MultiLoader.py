@@ -18,7 +18,7 @@ class MultiLoader:
         return loader
 
     def generate_request(self, url):
-        header = {'User-Agent': self.useragent.random}
+        header ={'User-Agent': self.useragent.random}
         req = urllib2.Request(url, headers=header)
         return req
 
@@ -26,17 +26,28 @@ class MultiLoader:
         requests = []
         for url in self.urls:
             req = self.generate_request(url)
-            requests.append((req))
-        # Make the Pool of workers
-        pool = ThreadPool(10)
-        # Open the urls in their own threads
-        # and return the results
-        results = pool.map(urllib2.urlopen, requests)
-        #close the pool and wait for the work to finish
-        pool.close()
-        pool.join()
+            requests.append(req)
+        results = []
+        tile_per_trial = 2
+        nb_urls = len(requests)
+
+        for i in range(int(nb_urls/tile_per_trial)):
+            start = i * tile_per_trial
+            end = start + tile_per_trial
+            if(end >= nb_urls): end = nb_urls -1
+            urlpart = requests[start:end]
+            print i, urlpart[0]
+            result = self._download(urlpart)
+            results += result
 
         self.results = self._convert_to_image(results)
+
+    def _download(self, urls):
+        pool = ThreadPool(10)
+        results = pool.map(urllib2.urlopen, urls)
+        pool.close()
+        pool.join()
+        return results
 
     def _convert_to_image(self, results):
         ret = []

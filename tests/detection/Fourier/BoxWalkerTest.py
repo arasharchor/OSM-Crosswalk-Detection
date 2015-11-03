@@ -48,6 +48,7 @@ class TestImageLoader(unittest.TestCase):
             tile.drawPoint(point)
 
         tile.stopDrawing()
+        tile.image.save("boxsave.png")
         tile.plot()
 
     def test_Saveimages(self):
@@ -143,3 +144,6 @@ class TestImageLoader(unittest.TestCase):
 
     def zh_quartier2(self):
         return Bbox(8.520495, 47.369944, 8.523971, 47.372846)
+
+    def RappiUhuereGross(self):
+        return Bbox(8.804742, 47.215446, 8.850833, 47.237799)

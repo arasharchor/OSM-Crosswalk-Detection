@@ -43,6 +43,7 @@ class TileLoader:
                 url = self._build_url(quadtree)
                 urls.append(url)
 
+        print "- Download", len(urls), "tiles"
         loader = MultiLoader.from_url_list(urls)
         loader.download()
 

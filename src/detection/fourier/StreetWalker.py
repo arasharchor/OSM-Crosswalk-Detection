@@ -16,6 +16,7 @@ class StreetWalker:
         self.bigTile = bigTile
         self.node1 = street.nodes[0]
         self.node2 = street.nodes[1]
+        self.nb_images = 0
 
     def getStreetTile(self):
         bigTile = self.bigTile
@@ -36,6 +37,7 @@ class StreetWalker:
 
     def walk(self):
         squaredTiles = self.getSquaredTiles(self.node1, self.node2)
+        self.nb_images = len(squaredTiles)
         crosswalkNodes = []
 
         images = []
@@ -86,7 +88,7 @@ class StreetWalker:
         distanceBetweenNodes = node1.getDistanceInMeter(node2)
 
         squaresTiles = []
-        print "Images : ", int(distanceBetweenNodes/stepDistance) + 1
+        #print "Images : ", int(distanceBetweenNodes/stepDistance) + 1
         for i in range(0, int(distanceBetweenNodes/stepDistance) + 1):
             currentDistance = stepDistance * i
             currentNode = node1.stepTo(node2, currentDistance)
