@@ -8,6 +8,8 @@ class MultiLoader:
     def __init__(self):
         self.urls = []
         self.results = []
+        self.nb_threads = 10
+        self.nb_tile_per_trial = 20
         self.useragent = UserAgent()
 
 
@@ -23,27 +25,35 @@ class MultiLoader:
         return req
 
     def download(self):
-        requests = []
-        for url in self.urls:
-            req = self.generate_request(url)
-            requests.append(req)
         results = []
-        tile_per_trial = 2
-        nb_urls = len(requests)
+        nb_urls = len(self.urls)
+        percentage = 0
+        for i in range(int(nb_urls/self.nb_tile_per_trial)+1):
+            start = i * self.nb_tile_per_trial
+            end = start + self.nb_tile_per_trial
+            if(end >= nb_urls): end = nb_urls
+            urlpart = self.urls[start:end]
 
-        for i in range(int(nb_urls/tile_per_trial)):
-            start = i * tile_per_trial
-            end = start + tile_per_trial
-            if(end >= nb_urls): end = nb_urls -1
-            urlpart = requests[start:end]
-            print i, urlpart[0]
-            result = self._download(urlpart)
+            result = self._try_download(urlpart)
             results += result
+            newpercentage = (float(end)/nb_urls) * 100
+            if(percentage + 5 < newpercentage):
+                percentage = newpercentage
+                print "-- " + str(int(percentage)) + "%"
 
         self.results = self._convert_to_image(results)
 
+    def _try_download(self, requests):
+        for i in range(3):
+            try:
+                results = self._download(requests)
+                return results
+            except:
+                pass
+        raise Exception("Download of tiles have failed 4 times...")
+
     def _download(self, urls):
-        pool = ThreadPool(10)
+        pool = ThreadPool(self.nb_threads)
         results = pool.map(urllib2.urlopen, urls)
         pool.close()
         pool.join()

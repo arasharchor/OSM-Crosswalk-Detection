@@ -1,6 +1,4 @@
-import datetime
-from src.detection.fourier.FourierTransform import FourierTransform
-from PIL import Image
+
 from random import randint
 from src.base.Bbox import Bbox
 from src.base.Tile import Tile

@@ -4,6 +4,7 @@ from src.base.Bbox import Bbox
 from src.base.Constants import Constants
 from src.base.Tile import Tile
 from src.service.TilesLoader.TileProxy import TileProxy
+from src.base.TileDrawer import TileDrawer
 
 
 
@@ -11,7 +12,7 @@ from src.service.TilesLoader.TileProxy import TileProxy
 class TestImageLoader(unittest.TestCase):
 
     def testBoxWalkerLuzern(self):
-        walker = BoxWalker(self.Lyss())
+        walker = BoxWalker(self.RappiUhuereGross())
         walker.loadTiles()
         walker.loadStreets()
 
@@ -19,37 +20,13 @@ class TestImageLoader(unittest.TestCase):
 
         self.printResults(walker.tile, crosswalkNodes)
 
-    def test_Boxwalker(self):
-        proxy = self.getRappiProxy()
-        bbox = proxy.bbox
-        walker = BoxWalker(bbox)
-        walker.proxy = proxy
-        walker.loadStreets()
-
-        crosswalkNodes = walker.walk()
-
-        proxy = walker.proxy
-        tile = proxy.getBigTile(bbox.getDownLeftPoint(),bbox.getUpRightPoint())
-        tile.startDrawing()
-        for node in crosswalkNodes:
-            point = node.toPoint()
-            tile.drawPoint(point)
-
-        tile.stopDrawing()
-        tile.plot()
-        tile.image.save("boxwalkertest.png")
-
-        print str(len(crosswalkNodes)) + " crosswalks found!"
-
     def printResults(self, tile, crosswalkNodes):
-        tile.startDrawing()
+        drawer = TileDrawer.from_tile(tile)
         for node in crosswalkNodes:
-            point = node.toPoint()
-            tile.drawPoint(point)
+            drawer.draw_point(node.toPoint())
+        drawer.drawsection.save("boxsave.png")
+        #drawer.drawsection.show()
 
-        tile.stopDrawing()
-        tile.image.save("boxsave.png")
-        tile.plot()
 
     def test_Saveimages(self):
         bbox = self.Lyss()

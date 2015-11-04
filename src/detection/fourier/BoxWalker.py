@@ -40,8 +40,7 @@ class BoxWalker:
             crosswalkNodes += streetResults
             percentage = (iCount / float(streetsCount)) *100
             if(lastpercentage + 1 < percentage):
-                self.setConsoleState(percentage, len(crosswalkNodes))
-                #print  "walking:", "{0:0.1f}".format(percentage), "%"
+                self.setConsoleState(percentage, len(crosswalkNodes), nb_images)
                 lastpercentage = percentage
 
         self.out("Finish walking")
@@ -51,8 +50,8 @@ class BoxWalker:
         print nb_images, "images predicted"
         return crosswalkNodes
 
-    def setConsoleState(self, percentage, crosswalks_found):
-        msg = "walking:" + "{0:0.1f}".format(percentage) + "% - " + str(crosswalks_found) + " crosswalks found"
+    def setConsoleState(self, percentage, crosswalks_found, nb_images):
+        msg = "walking " + str(int(percentage)) + "% - " + str(crosswalks_found) + " crosswalks found in " + str(nb_images) + " images"
         #sys.stdout.write("\r" + msg)
         #sys.stdout.flush()
         print msg

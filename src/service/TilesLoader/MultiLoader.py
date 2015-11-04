@@ -7,6 +7,8 @@ class MultiLoader:
     def __init__(self):
         self.urls = []
         self.results = []
+        self.nb_threads = 10
+        self.nb_tile_per_trial = 20
 
     @classmethod
     def from_url_list(cls, urls):
@@ -16,18 +18,27 @@ class MultiLoader:
 
     def download(self):
         results = []
-        tile_per_trial = 40
         nb_urls = len(self.urls)
 
-        for i in range(int(nb_urls/tile_per_trial)):
-            start = i * tile_per_trial
-            end = start + tile_per_trial
+        for i in range(int(nb_urls/self.nb_tile_per_trial)):
+            start = i * self.nb_tile_per_trial
+            end = start + self.nb_tile_per_trial
             if(end >= nb_urls): end = nb_urls -1
             urlpart = self.urls[start:end]
-            result = self._download(urlpart)
+
+            result = self._try_download(urlpart)
             results += result
 
         self.results = self._convert_to_image(results)
+
+    def _try_download(self, requests):
+        for i in range(3):
+            try:
+                results = self._download(requests)
+                return results
+            except:
+                pass
+        raise Exception("Download of tiles have failed 4 times...")
 
     def _download(self, urls):
         pool = ThreadPool(10)

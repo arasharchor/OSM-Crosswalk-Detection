@@ -1,8 +1,5 @@
 import numpy as np
 import cv2
-from src.detection.fourier.mlp.NeuralNetwork import NeuralNetwork
-from src.detection.fourier.mlp.SampleData import SampleData
-import PIL
 from scipy import ndimage
 from PIL import Image
 from matplotlib import pyplot as plt
@@ -154,14 +151,6 @@ class CrosswalkDetector:
         plt.imshow(self.getPilImage())
         plt.show()
 
-    neuralNetwork = None
-    @staticmethod
-    def getNeuralNetwork():
-        if(CrosswalkDetector.neuralNetwork is None):
-
-            #CrosswalkDetector.neuralNetwork = NeuralNetwork.fromFile("/home/osboxes/Documents/squaredImages/ffnn50,50,85.7 2d.serialize")
-            CrosswalkDetector.neuralNetwork = NeuralNetwork.fromFile("/home/osboxes/Documents/squaredImages/fnnMoreStreet.serialize")
-        return CrosswalkDetector.neuralNetwork
 
 
 
