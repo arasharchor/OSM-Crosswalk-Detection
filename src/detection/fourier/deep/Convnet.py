@@ -295,7 +295,7 @@ def predict_list(x):
     predictions = network.predict(x)
     results = []
     for predict in predictions:
-        isCrosswalk = predict[0] > 0.9 and predict[1] < 1e-100
+        isCrosswalk = predict[0] > 0.9 and predict[1] < 1e-150
         #if(isCrosswalk): print("Zerba " + str(predict))
         #else: print(str(predict))
         results.append(isCrosswalk)
