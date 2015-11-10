@@ -50,7 +50,7 @@ class MultiLoader:
                 return results
             except:
                 pass
-        raise Exception("Download of tiles have failed 4 times...")
+        raise Exception("Download of tiles have failed 4 times. Internet connection ok?")
 
     def _download(self, urls):
         pool = ThreadPool(self.nb_threads)

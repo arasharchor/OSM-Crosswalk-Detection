@@ -1,9 +1,6 @@
 from src.detection.fourier.BoxWalker import BoxWalker
 import unittest
 from src.base.Bbox import Bbox
-from src.base.Constants import Constants
-from src.base.Tile import Tile
-from src.service.TilesLoader.TileProxy import TileProxy
 from src.base.TileDrawer import TileDrawer
 
 
@@ -12,7 +9,7 @@ from src.base.TileDrawer import TileDrawer
 class TestImageLoader(unittest.TestCase):
 
     def testBoxWalkerLuzern(self):
-        walker = BoxWalker(self.RappiUhuereGross())
+        walker = BoxWalker(self.Zurich2())
         walker.loadTiles()
         walker.loadStreets()
 
@@ -24,22 +21,8 @@ class TestImageLoader(unittest.TestCase):
         drawer = TileDrawer.from_tile(tile)
         for node in crosswalkNodes:
             drawer.draw_point(node.toPoint())
-        drawer.drawsection.save("boxsave.png")
-        #drawer.drawsection.show()
-
-
-    def test_Saveimages(self):
-        bbox = self.Lyss()
-        walker = BoxWalker(bbox)
-        walker.loadTiles()
-        walker.loadStreets()
-
-        walker.saveImages()
-
-    def getRappiProxy(self):
-        #Trainset
-        path = Constants.SerializationFolder +  "rapperswil.serialize"# "zurichBellvue.serialize"
-        return TileProxy.fromFile(path)
+        drawer.drawsection.save("boxsave.jpg")
+        drawer.drawsection.show()
 
     def ZurichBellvue(self):
         #Trainset
@@ -124,3 +107,6 @@ class TestImageLoader(unittest.TestCase):
 
     def RappiUhuereGross(self):
         return Bbox(8.804742, 47.215446, 8.850833, 47.237799)
+
+    def ZurichUhuereGross(self):
+        return Bbox(8.523379, 47.368823, 8.573379, 47.390823)
