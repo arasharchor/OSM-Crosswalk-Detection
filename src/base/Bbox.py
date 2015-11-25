@@ -44,6 +44,16 @@ class Bbox:
     def node_rightup(self):
         return Node(self.top, self.right)
 
+    def get_x_distance(self):
+        left = Node(self.bottom, self.left)
+        right = Node(self.bottom, self.right)
+        return left.get_distance_in_meter(right)
+
+    def get_y_distance(self):
+        bottom = Node(self.bottom, self.right)
+        top = Node(self.top, self.right)
+        return bottom.get_distance_in_meter(top)
+
     def in_bbox(self, node):
         lat = node.latitude
         lon = node.longitude
