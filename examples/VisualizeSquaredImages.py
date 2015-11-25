@@ -34,7 +34,7 @@ def draw(tile, streets, squared_images):
 
     return drawer
 
-zurich_bellevue = Bbox.from_lbrt(8.54279671719532, 47.366177501999516, 8.547088251618977, 47.36781249586627)
+zurich_bellevue = Bbox.from_bltr(47.320074, 8.547435, 47.323934, 8.550514)#Bbox.from_lbrt(8.54279671719532, 47.366177501999516, 8.547088251618977, 47.36781249586627)
 
 (tile, streets) = load_tile_streets(zurich_bellevue) # Loads all tiles and streets within bbox
 

@@ -9,7 +9,7 @@ class StreetWalker:
         self.tile = None
         self.convnet = None
         self.nb_images = 0
-        self.step_distance = 8
+        self.step_distance = 6
 
     @classmethod
     def from_street_tile(cls, street, tile, convnet):
