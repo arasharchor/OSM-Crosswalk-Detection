@@ -5,6 +5,8 @@ MAINTAINER Samuel Kurath <skurath@hsr.ch>
 ENV REDIS_PORT 40001
 ENV DASHBOARD_PORT 40002
 
+EXPOSE $REDIS_PORT $DASHBOARD_PORT
+
 COPY /entrypoint.sh /
 COPY /my_redis.conf /etc/redis/
 
