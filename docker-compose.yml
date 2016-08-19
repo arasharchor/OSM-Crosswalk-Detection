@@ -2,15 +2,17 @@ version: '2'
 services:
   redis:
     build: ./docker/redis/
+    container_name: crosswalk_redis
     ports:
       - "40001-40002:40001-40002"
   crosswalks:
-    build: ./docker/redis/
-    devices:
-      -
+    build: ./docker/crosswalk/
+    container_name: crosswalk_detection
     volumes:
-      - .:/code
-    ports:
-      - "8000:8000"
+      - ~/crosswalks:/crosswalks/
+    devices:
+      -"/dev/nvidiactl:/dev/nvidiactl"
+      -"/dev/nvidia-uvm:/dev/nvidia-uvm"
+      -"/dev/nvidia-uvm:/dev/nvidia-uvm"
     depends_on:
-      - db
+      - redis
